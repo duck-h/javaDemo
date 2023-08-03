@@ -99,7 +99,5 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
         //清空購物車數據
         shoppingCartService.remove(queryWrapper);
-
     }
-    
 }
