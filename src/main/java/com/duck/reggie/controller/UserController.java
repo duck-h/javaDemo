@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.duck.reggie.common.R;
 import com.duck.reggie.entity.User;
 import com.duck.reggie.service.UserService;
-import com.duck.reggie.utils.SMSUtils;
 import com.duck.reggie.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -78,4 +77,5 @@ public class UserController {
         }
         return R.error("登入失敗");
     }
+
 }
