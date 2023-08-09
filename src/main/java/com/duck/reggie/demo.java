@@ -12,7 +12,6 @@ public class demo {
     public static void main(String[] args) {
 //        IntStream.range(0,10).forEach(System.out::println);
 
-
        /* List<String> names = Stream.of("a", "b", "c")
                 .collect(Collectors.toList());
         List<String> names2= Arrays.asList("a","b","c");
