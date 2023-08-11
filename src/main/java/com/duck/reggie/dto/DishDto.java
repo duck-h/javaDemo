@@ -2,6 +2,7 @@ package com.duck.reggie.dto;
 
 import com.duck.reggie.entity.Dish;
 import com.duck.reggie.entity.DishFlavor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.ArrayList;

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,11 +37,15 @@ public class Category implements Serializable {
 
     //创建时间
     @TableField(fill = FieldFill.INSERT)
+    @JsonDeserialize
+    @JsonSerialize
     private LocalDateTime createTime;
 
 
     //更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonDeserialize
+    @JsonSerialize
     private LocalDateTime updateTime;
 
 

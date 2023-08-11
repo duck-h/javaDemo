@@ -5,9 +5,11 @@ import com.duck.reggie.common.R;
 import com.duck.reggie.entity.User;
 import com.duck.reggie.service.UserService;
 import com.duck.reggie.utils.ValidateCodeUtils;
+import com.sun.xml.internal.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +25,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //發送手機驗證碼簡訊
     @PostMapping("/sendMsg")
@@ -38,7 +44,11 @@ public class UserController {
             //SMSUtils.sendMessage("","",phone,code);
 
             //將生成的驗證碼保存到Session
-            session.setAttribute(phone, code);
+            //session.setAttribute(phone, code);
+
+            //TODO:改造 將生成的驗證碼緩存到redis中，並設置有效時間五分鐘
+            redisTemplate.opsForValue().set(phone, code, 5, TimeUnit.MINUTES);
+
             return R.success("手機驗證碼發送成功");
         }
         return R.error("簡訊發送失敗");
@@ -55,7 +65,11 @@ public class UserController {
         //獲取驗證碼
         String code = map.get("code").toString();
         //從session中獲取保存的驗證碼
-        Object codeInSession = session.getAttribute(phone);
+        //Object codeInSession = session.getAttribute(phone);
+
+        //TODO:改造 從redis中獲取緩存的驗證碼
+        Object codeInSession = redisTemplate.opsForValue().get(phone);
+
         //驗證碼比對（session / 使用者提交）
         if (codeInSession != null && codeInSession.equals(code)) {
             //比對成功 -> 登入
@@ -71,7 +85,10 @@ public class UserController {
 
                 userService.save(user);
             }
-            session.setAttribute("user",user.getId());
+            session.setAttribute("user", user.getId());
+
+            //TODO 改造 用戶刪除成功，刪除redis中緩存的驗證碼
+            redisTemplate.delete(phone);
             return R.success(user);
 
         }

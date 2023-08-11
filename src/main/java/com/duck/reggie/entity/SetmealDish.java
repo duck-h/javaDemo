@@ -2,6 +2,7 @@ package com.duck.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
